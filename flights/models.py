@@ -9,3 +9,15 @@ class Flight(models.Model):
     date_of_departure = models.DateField()
     estimated_time_of_departure=models.TimeField()
 
+
+class Passenger(models.Model):
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    middle_name = models.CharField(max_length=20)
+    email = models.CharField(max_length=20)
+    phone = models.CharField(max_length=10)
+
+
+
+    
+
