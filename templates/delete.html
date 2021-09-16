@@ -2,5 +2,10 @@
 
 
 {% block content %}
-
+    <h1>Delete Flight</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <p>Are you Sure you want to delete "{{flight.flight_number}}"</p>
+        <input type="submit" value="Confirm">
+    </form>
 {% endblock content %}

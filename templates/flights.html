@@ -33,6 +33,7 @@
                     <td>
                         <a href="{% url 'flight_detail' flight.id %}">View</a>
                         <a href="{% url 'flight_edit' flight.id %}">Edit</a>
+                        <a href="{% url 'delete_flight' flight.id %}">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
