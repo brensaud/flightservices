@@ -36,9 +36,13 @@ urlpatterns = [
     path('flightservices/', include(router.urls)),
     path('flightservices/find-flights/', views.find_flights),
     path('flightservices/save-reservation/', views.save_reservation),
-
     # API Route End
+
+    # crude using forms
     path('', include('formscrud.urls')),
+
+    # crude using api
+    path('apicrud/', include('apicrud.urls')),
 ]
 
 

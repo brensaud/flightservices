@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Flight Number</th>
+                    <th scope="col">Airline</th>
+                    <th scope="col">Departure City</th>
+                    <th scope="col">Arrival City</th>
+                    <th scope="col">Date of Departure</th>
+                    <th scope="col">Estimated Time of Departure</th>
+                    <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-wrapper">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        config = {
+            method: 'get',
+            url:'http://localhost:8000/flightservices/flights/'
+        }
+
+        const promiseObj = axios(config)
+
+        promiseObj.then( (res) =>{
+            const data = res.data
+            let flight_html =``;
+
+            data.forEach(flight => {
+
+                flight_html += `
+                    <tr>
+                        <th scope="row">${flight.id}</th>
+                        <td>${flight.flight_number}</td>
+                        <td>${flight.operating_airlines}</td>
+                        <td>${flight.departure_city}</td>
+                        <td>${flight.arrival_city}</td>
+                        <td>${flight.date_of_departure}</td>
+                        <td>${flight.estimated_time_of_departure}</td>
+                        <td>
+                            <button class="view-detail btn btn-success" data-id="${flight.id}">view</button>
+                            <button class="view-detail btn btn-success" data-id="${flight.id}">edit</button>
+                            <button class="view-detail btn btn-success" data-id="${flight.id}">delete</button>
+                        </td>
+                    </tr>
+                `
+                document.getElementById("tb-wrapper").innerHTML=flight_html;
+            });
+        })
+
+        $(document).find('.view-detail').off('click').on('click', function(e){
+            console.log('inside view event')
+            e.preventDefault()
+            let id = $(this).attr('data-id');
+            console.log(id);
+            console.log(typeof id);
+        })
+
+    </script>
+
+</body>
+</html>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'flights.apps.FlightsConfig',
     'formscrud.apps.FormscrudConfig',
+    'apicrud.apps.ApicrudConfig',
 ]
 
 MIDDLEWARE = [
