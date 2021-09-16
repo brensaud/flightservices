@@ -26,7 +26,8 @@ class Passenger(models.Model):
 
 
 class Reservation(models.Model):
-    flight = models.OneToOneField(Flight, on_delete=models.CASCADE)
+    # A flight can be a part of multiple reservations
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     passenger = models.OneToOneField(Passenger, on_delete=models.CASCADE)
 
     def __str__(self):
