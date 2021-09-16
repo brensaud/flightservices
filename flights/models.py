@@ -15,6 +15,7 @@ class Flight(models.Model):
 
 
 class Passenger(models.Model):
+    picture = models.ImageField(upload_to="pictures/%Y/%m/%d/", null=True, blank=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     middle_name = models.CharField(max_length=20)

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from flights import views
 
@@ -29,7 +31,15 @@ router.register('reservations', views.ReservationViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # API ROUTE
     path('flightservices/', include(router.urls)),
-    path('flightservices/find-flights/', views.find_flights, name='find-flights'),
-    path('flightservices/save-reservation/', views.save_reservation, name='save-reservation')
+    path('flightservices/find-flights/', views.find_flights),
+    path('flightservices/save-reservation/', views.save_reservation),
+
+    # API Route End
+    path('', include('formscrud.urls')),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

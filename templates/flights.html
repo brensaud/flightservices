@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Flight-Reservation{% endblock title %}
+
+{% block content %}
+<div class="row mt-5">
+
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Flight Number</th>
+            <th scope="col">Airline</th>
+            <th scope="col">Departure City</th>
+            <th scope="col">Arrival City</th>
+            <th scope="col">Date of Departure</th>
+            <th scope="col">Estimated Time of Departure</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in object_list %}
+                <tr>
+                    <th scope="row">{{ flight.id }}</th>
+                    <td>{{ flight.flight_number}}</td>
+                    <td>{{ flight.operating_airlines }}</td>
+                    <td>{{ flight.departure_city }}</td>
+                    <td>{{ flight.arrival_city }}</td>
+                    <td>{{ flight.date_of_departure }}</td>
+                    <td>{{ flight.estimated_time_of_departure }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
