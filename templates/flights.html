@@ -15,6 +15,7 @@
             <th scope="col">Arrival City</th>
             <th scope="col">Date of Departure</th>
             <th scope="col">Estimated Time of Departure</th>
+            <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,9 @@
                     <td>{{ flight.arrival_city }}</td>
                     <td>{{ flight.date_of_departure }}</td>
                     <td>{{ flight.estimated_time_of_departure }}</td>
+                    <td>
+                        <a href="{% url 'flight_detail' flight.id %}">View</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # Create your models here.
@@ -9,6 +10,9 @@ class Flight(models.Model):
     arrival_city = models.CharField(max_length=20)
     date_of_departure = models.DateField()
     estimated_time_of_departure=models.TimeField()
+
+    def get_absolute_url(self):
+        return reverse('flight_detail', args=[str(self.id)])
 
     def __str__(self):
         return self.flight_number

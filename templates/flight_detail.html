@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Flight-Detail{% endblock title %}
 
 {% block content %}
@@ -8,11 +10,18 @@
 
     <div class="row">
         <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="{% static 'images/airline1.jpeg' %}" class="card-img-top" alt="...">
         <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h5>{{ flight.id }}</h5>
+            <h5 class="card-title">{{ flight.operating_airlines }}</h5>
+            <h5 class="card-title">{{ flight.flight_number }}</h5>
+            <h5>{{ flight.departure_city }}</h5>
+            <h5>{{ flight.arrival_city  }}</h5>
+            <h5>{{ flight.date_of_departure}}</h5>
+            <h5>{{ flight.departure_city }}</h5>
+            <h5>{{ flight.estimated_time_of_departure }}</h5>
+            <a href="#" class="btn btn-primary">Delete</a>
+            <a href="#" class="btn btn-primary">Update</a>
         </div>
         </div>
     </div>
