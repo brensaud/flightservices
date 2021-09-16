@@ -4,20 +4,20 @@ from flights.serializers import FlightSerializer, PassengerSerializer, Reservati
 from rest_framework import viewsets
 
 # Create your views here.
-class FlightViewSet(viewsets.ModelViewset):
+class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
 
 
 
 
-class PassengerViewSet(viewsets.ModelViewset):
+class PassengerViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = PassengerSerializer
 
 
 
 
-class ReservationViewSet(viewsets.ModelViewset):
+class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = ReservationSerializer
