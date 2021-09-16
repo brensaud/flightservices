@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,55 +32,196 @@
     </div>
 
 
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        config = {
-            method: 'get',
-            url:'http://localhost:8000/flightservices/flights/'
-        }
+        $.ajax({
+            url: 'http://localhost:8000/flightservices/flights/',
+            success: function(response){
+                let flight_html = ``;
+                response.forEach(flight => {
+                    flight_html += `
+                        <tr>
+                            <th scope="row">${ flight.id }</th>
+                            <td>${ flight.flight_number}</td>
+                            <td>${ flight.operating_airlines }</td>
+                            <td>${ flight.departure_city }</td>
+                            <td>${ flight.arrival_city }</td>
+                            <td>${ flight.date_of_departure }</td>
+                            <td>${ flight.estimated_time_of_departure }</td>
+                            <td>
+                                <a href=""class="data-view" data-id="${flight.id}">View</a>
+                                <a href="#" class="edit-flight" data-id="${flight.id}">Edit</a>
+                                <a href="#" class="delete-flight" data-id="${flight.id}">Delete</a>
+                            </td>
+                        </tr>
+                    `;
+                });
 
-        const promiseObj = axios(config)
-
-        promiseObj.then( (res) =>{
-            const data = res.data
-            let flight_html =``;
-
-            data.forEach(flight => {
-
-                flight_html += `
-                    <tr>
-                        <th scope="row">${flight.id}</th>
-                        <td>${flight.flight_number}</td>
-                        <td>${flight.operating_airlines}</td>
-                        <td>${flight.departure_city}</td>
-                        <td>${flight.arrival_city}</td>
-                        <td>${flight.date_of_departure}</td>
-                        <td>${flight.estimated_time_of_departure}</td>
-                        <td>
-                            <button class="view-detail btn btn-success" data-id="${flight.id}">view</button>
-                            <button class="view-detail btn btn-success" data-id="${flight.id}">edit</button>
-                            <button class="view-detail btn btn-success" data-id="${flight.id}">delete</button>
-                        </td>
-                    </tr>
-                `
-                document.getElementById("tb-wrapper").innerHTML=flight_html;
-            });
+                $('#tb-wrapper').html(flight_html);
+            },
+            error: function(err) {
+                console.log(err)
+            }
         })
 
-        $(document).find('.view-detail').off('click').on('click', function(e){
-            console.log('inside view event')
+        $(document).on('click', '.data-view', function(e) {
             e.preventDefault()
-            let id = $(this).attr('data-id');
-            console.log(id);
-            console.log(typeof id);
+            let flight_id = $(this).attr('data-id')
+            $.ajax({
+                url: 'http://localhost:8000/flightservices/flights/'+ flight_id,
+                success: function(flight){
+                    let detail_html = `
+                        <h1>Flights Detail</h1>
+
+                        <div class="row">
+                            <div class="card" style="width: 18rem;">
+                            <img src="{% static 'images/airline1.jpeg' %}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5>${flight.id}</h5>
+                                <h5 class="card-title">${flight.operating_airlines}</h5>
+                                <h5 class="card-title">${flight.flight_number}</h5>
+                                <h5>${flight.departure_city}</h5>
+                                <h5>${flight.arrival_city}</h5>
+                                <h5>${flight.date_of_departure}</h5>
+                                <h5>${flight.departure_city}</h5>
+                                <h5>${ flight.estimated_time_of_departure}</h5>
+                                <a href="#" class="btn btn-primary">Delete</a>
+                                <a href="#" class="btn btn-primary">Update</a>
+                            </div>
+                            </div>
+                        </div>
+                    `;
+
+                    $('.container').html(detail_html);
+                },
+                error: function(err) {
+                    console.log('Something wrong happen')
+                }
         })
+
+        })
+
+
+        $(document).off('click', '.edit-flight').on('click', '.edit-flight', function(e) {
+            e.preventDefault()
+            let flight_id = $(this).attr('data-id')
+            $.ajax({
+                url: 'http://localhost:8000/flightservices/flights/'+ flight_id + '/',
+                success: function(flight){
+                    let detail_html = `
+                        <h1>Update Flights Detail</h1>
+                        <form id="update-form">
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Flight Number</label>
+                                    <input type="text" name="flight_number" value="${flight.flight_number}" class="form-control" id="inputEmail4">
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Airline</label>
+                                    <input type="text" name="operating_airlines" value="${flight.operating_airlines}" class="form-control" id="inputEmail4">
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Departure City</label>
+                                    <input type="text" name="departure_city" value="${flight.departure_city}" class="form-control" id="inputEmail4">
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Arrival City</label>
+                                    <input type="text" name="arrival_city" value="${flight.arrival_city}" class="form-control" id="inputEmail4">
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Date of Departure</label>
+                                    <input type="date" name="date_of_departure" value="${flight.date_of_departure}" class="form-control" id="inputEmail4">
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Estimated time of departure</label>
+                                    <input type="time" name="estimated_time_of_departure" value="${flight.estimated_time_of_departure}" class="form-control" id="inputEmail4">
+                                </div>
+
+                            </div>
+
+                            <button type="submit" id="update-flight" data-id="${flight.id}" class="btn btn-primary">Update</button>
+                        </form>
+                    `;
+
+                    $('.container').html(detail_html);
+                },
+                error: function(err) {
+                    console.log('Something wrong happen')
+                }
+            });
+        });
+
+
+        function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+
+        $(document).off('click', '#update-flight').on('click', '#update-flight', function(e) {
+            e.preventDefault()
+            let flight_id = $(this).attr('data-id')
+            $.ajax({
+                url: 'http://localhost:8000/flightservices/flights/'+flight_id+'/',
+                method: 'PUT',
+                headers: {'X-CSRFToken': csrftoken},
+                dataType: 'json',
+                data:$("#update-form").serialize(),
+                success: function(resonse){
+                    console.log(response)
+                    alert('Successfull Updated')
+                },
+                error: function(err) {
+                    console.log('Something wrong happen')
+                }
+            });
+        });
+
+
+        $(document).off('click', '.delete-flight').on('click', '.delete-flight', function(e) {
+            e.preventDefault() 
+            console.log($(this).attr('data-id'))
+        });
+
 
     </script>
-
 </body>
 </html>
