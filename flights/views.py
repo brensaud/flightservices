@@ -12,12 +12,12 @@ class FlightViewSet(viewsets.ModelViewSet):
 
 
 class PassengerViewSet(viewsets.ModelViewSet):
-    queryset = Flight.objects.all()
+    queryset = Passenger.objects.all()
     serializer_class = PassengerSerializer
 
 
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Flight.objects.all()
+    queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
