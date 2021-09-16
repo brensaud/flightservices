@@ -21,6 +21,7 @@ class FlightDetailView(DeleteView):
 class FlightCreateView(CreateView):
     model = Flight
     template_name = 'create_flight.html'
+    fields = ['flight_number', 'operating_airlines', 'departure_city', 'arrival_city', 'date_of_departure', 'estimated_time_of_departure',]
 
 
 class FlightUpdateView(UpdateView):

@@ -9,4 +9,5 @@ from .views import (
 urlpatterns = [
     path('', FlightListView.as_view(), name = 'home'),
     path('flight/<int:pk>/', FlightDetailView.as_view(), name = 'flight_detail'),
+    path('flight/new/', FlightCreateView.as_view(), name = 'flight_create'),
 ]
