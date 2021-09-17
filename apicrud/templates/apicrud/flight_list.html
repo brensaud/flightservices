@@ -11,7 +11,8 @@
 <body>
 
     <div class="container">
-        <div class="row">
+        <div class="row mt-5">
+            <button id="add-flight-get" class="btn btn-primary mb-5">Add Flight</button>
             <table class="table table-striped table-dark">
                 <thead>
                     <tr>
@@ -50,7 +51,7 @@
                             <td>${ flight.date_of_departure }</td>
                             <td>${ flight.estimated_time_of_departure }</td>
                             <td>
-                                <a href=""class="data-view" data-id="${flight.id}">View</a>
+                                <a href="#" class="data-view" data-id="${flight.id}">View</a>
                                 <a href="#" class="edit-flight" data-id="${flight.id}">Edit</a>
                                 <a href="#" class="delete-flight" data-id="${flight.id}">Delete</a>
                             </td>
@@ -205,9 +206,94 @@
                 headers: {'X-CSRFToken': csrftoken},
                 dataType: 'json',
                 data:$("#update-form").serialize(),
-                success: function(resonse){
-                    console.log(response)
-                    alert('Successfull Updated')
+                success: function(response){
+                    window.location = "http://localhost:8000/apicrud/flights/";
+                },
+                error: function(err) {
+                    console.log('Something wrong happen')
+                }
+            });
+        });
+
+
+
+
+        $(document).off('click', '#add-flight-get').on('click', '#add-flight-get', function(e) {
+            e.preventDefault()
+            let detail_html = `
+                <h1>Fill Flights Detail</h1>
+                <form id="add-form">
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Flight Number</label>
+                            <input type="text" name="flight_number" class="form-control" id="inputEmail4">
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Airline</label>
+                            <input type="text" name="operating_airlines" class="form-control" id="inputEmail4">
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Departure City</label>
+                            <input type="text" name="departure_city" class="form-control" id="inputEmail4">
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Arrival City</label>
+                            <input type="text" name="arrival_city" class="form-control" id="inputEmail4">
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Date of Departure</label>
+                            <input type="date" name="date_of_departure" class="form-control" id="inputEmail4">
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Estimated time of departure</label>
+                            <input type="time" name="estimated_time_of_departure"  class="form-control" id="inputEmail4">
+                        </div>
+
+                    </div>
+
+                    <button type="submit" id="post-flight" class="btn btn-primary">Add Flight</button>
+                </form>
+            `;
+
+            $('.container').html(detail_html);
+        });
+
+
+        $(document).off('click', '#post-flight').on('click', '#post-flight', function(e) {
+            e.preventDefault()
+            $.ajax({
+                url: 'http://localhost:8000/flightservices/flights/',
+                method: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                dataType: 'json',
+                data:$("#add-form").serialize(),
+                success: function(response){
+                    window.location = "http://localhost:8000/apicrud/flights/";
                 },
                 error: function(err) {
                     console.log('Something wrong happen')
@@ -218,7 +304,20 @@
 
         $(document).off('click', '.delete-flight').on('click', '.delete-flight', function(e) {
             e.preventDefault() 
-            console.log($(this).attr('data-id'))
+            let flight_id = $(this).attr('data-id')
+            $.ajax({
+                url: 'http://localhost:8000/flightservices/flights/'+flight_id+'/',
+                method: 'DELETE',
+                headers: {'X-CSRFToken': csrftoken},
+                dataType: 'json',
+                success: function(response){
+                    alert("Flight Succesfull Deleted")
+                    window.location = "http://localhost:8000/apicrud/flights/";
+                },
+                error: function(err) {
+                    console.log('Something wrong happen')
+                }
+            });
         });
 
 
